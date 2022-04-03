@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "569128518823",
+    "project_id": "chat-lite-d6e5f",
+    "storage_bucket": "chat-lite-d6e5f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:569128518823:android:12d9803aba4198832cc782",
+        "android_client_info": {
+          "package_name": "com.maiqmaliq.chat_lite"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "569128518823-qdm3c5476652jbm8pj9se6h775uh7q0k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5McHphZAROGBlpQcg7WTxg00MgnaaCQw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "569128518823-qdm3c5476652jbm8pj9se6h775uh7q0k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
