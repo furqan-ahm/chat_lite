@@ -17,25 +17,25 @@ var textInputDecoration=InputDecoration(
   ),
   errorBorder: OutlineInputBorder(
     borderRadius: BorderRadius.circular(100),
-    borderSide: BorderSide(color: Colors.redAccent, width: 2)
+    borderSide: const BorderSide(color: Colors.redAccent, width: 2)
   ),
   focusedErrorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(100),
-      borderSide: BorderSide(color: Colors.orangeAccent, width: 2)
+      borderSide: const BorderSide(color: Colors.orangeAccent, width: 2)
   ),
   focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(100),
-      borderSide: BorderSide(color: Colors.blueGrey, width: 2)
+      borderSide: const BorderSide(color: Colors.blueGrey, width: 2)
   ),
   enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(100),
-      borderSide: BorderSide(color: Colors.black12, width: 2)
+      borderSide: const BorderSide(color: Colors.black12, width: 2)
   ),
 );
 
 var appBarMain=AppBar(
-  title: Text("Chat Me"),
+  title: const Text("Chat Me"),
 );
 
-var simpleTextStyle=TextStyle(color: Colors.white, fontSize: 16);
-var mediumTextStyle=TextStyle(color: Colors.white, fontSize: 17);
+var simpleTextStyle=const TextStyle(color: Colors.white, fontSize: 16);
+var mediumTextStyle=const TextStyle(color: Colors.white, fontSize: 17);

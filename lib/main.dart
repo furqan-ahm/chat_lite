@@ -1,6 +1,8 @@
 import 'package:e2ee_chat/firebase_options.dart';
-import 'package:e2ee_chat/services/auth_service.dart';
-import 'package:e2ee_chat/wrapper.dart';
+import 'package:e2ee_chat/providers/auth_provider.dart';
+import 'package:e2ee_chat/providers/user_state_provider.dart';
+import 'package:e2ee_chat/screens/splash_screen.dart';
+import 'package:e2ee_chat/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,11 +27,19 @@ class MyApp extends StatefulWidget {
 class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<chatUser?>.value(
-      value: AuthService().user,
-      initialData: null,
-      child: const MaterialApp(
-        home: Wrapper(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<MyAuthProvider>(
+          create: (context) => MyAuthProvider(),
+        ),
+        ChangeNotifierProvider<UserStateProvider>(
+          create: (context) => UserStateProvider(),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'ChatX',
+        theme: theme,
+        home: const SplashScreen(),
       ),
     );
   }
