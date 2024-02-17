@@ -53,6 +53,7 @@ dependencies:
   cached_network_image: ^3.3.1
   calendar_date_picker2: ^0.5.3
   hive_flutter: ^1.1.0
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:

@@ -58,7 +58,7 @@ class FirestoreRepository {
 
   static Stream<List<AppUser>> getUsers(String uid) {
     return _firestore
-        .collection(FirebaseCollections.usersCollection).where('uid', isNotEqualTo: uid)
+        .collection(FirebaseCollections.usersCollection).where('uid', isNotEqualTo: uid)  
         .snapshots()
         .map((snapshot) =>
             snapshot.docs.map((e) => AppUser.fromMap(e.data())).toList());
@@ -123,15 +123,17 @@ class FirestoreRepository {
   }
 
   static Future<void> uploadMessage(String chatId, Message message) async {
+    var encryptedMessage=await message.toEncryptedMap();
+    
     _firestore
         .collection('chatrooms')
         .doc(chatId)
         .collection('messages')
-        .add(message.toMap());
+        .add(encryptedMessage);
 
     _firestore.collection('chatrooms').doc(chatId).update({
-      'lastMessage': message.toMap(),
-      'lastMessageTime': message.toMap()['time']
+      'lastMessage': encryptedMessage,
+      // 'lastMessageTime': message.toEncryptedMap()['time']
     });
   }
 

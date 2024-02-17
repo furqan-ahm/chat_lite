@@ -5,7 +5,8 @@ import 'package:e2ee_chat/services/encryption_service.dart';
 class Message {
   final AppUser? sender;
   final AppUser? reciever;
-  final String? text;
+  String? text;
+  final EncryptedData? encryptedData;
   final bool? unread;
   final DateTime? time;
 
@@ -13,6 +14,7 @@ class Message {
     required this.sender,
     required this.reciever,
     required this.text,
+    this.encryptedData,
     required this.unread,
     required this.time,
   });
@@ -20,20 +22,22 @@ class Message {
   static Message fromMap(Map<String, dynamic> mapData) => Message(
         sender: AppUser.fromMap(mapData['sender']),
         reciever: AppUser.fromMap(mapData['receiver']),
-        text: mapData['content'] ?? 'Error',
+        encryptedData: EncryptedData.fromJson(mapData['content']),
+        text: mapData['text'] ?? 'Error',
         unread: mapData['unread'] ?? false,
         time: (mapData['time'] as Timestamp).toDate(),
       );
 
   static Future<Message> fromEncryptedMap(Map<String, dynamic> mapData) async {
     AppUser sender = AppUser.fromMap(mapData['sender']);
-
     var encryptedData = EncryptedData.fromJson(mapData['content']);
+    String text=await E2EncryptionService.instance
+          .decrypt(encryptedData, sender.publicKey);
+
     return Message(
       sender: sender,
       reciever: AppUser.fromMap(mapData['receiver']),
-      text: await E2EncryptionService.instance
-          .decrypt(encryptedData, sender.publicKey),
+      text: text,
       unread: mapData['unread'] ?? false,
       time: (mapData['time'] as Timestamp).toDate(),
     );

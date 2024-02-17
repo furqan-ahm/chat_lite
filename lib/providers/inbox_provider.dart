@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 
 class InboxProvider extends ChangeNotifier {
 
-
+  
    static InboxProvider of(BuildContext context, {bool listen = false}) =>
       Provider.of<InboxProvider>(context, listen: listen);
 

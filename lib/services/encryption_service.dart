@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:cryptography/cryptography.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -103,11 +104,15 @@ class E2EncryptionService {
     final secretBox = await _cypherAlgorithm.encrypt(encodedMessage,
         nonce: _nonce, secretKey: sharedSecret);
 
-    return EncryptedData(
+    var encryptedData= EncryptedData(
       bytes: secretBox.cipherText,
-      nonce: _nonce,
+      nonce: secretBox.nonce,
       mac: secretBox.mac.bytes,
     );
+    // debugPrint('STARTED ENCRYPTION\nPUBLIC KEY: $otherPublicKey \nENCRYPTED DATA: ${encryptedData.toJson()}');
+
+
+    return encryptedData;
   }
 
   /// Decrypts an encrypted message using the provided public key.
@@ -121,11 +126,15 @@ class E2EncryptionService {
       type: KeyPairType.x25519,
     ));
 
+    // debugPrint('STARTED DECRYPTION\nPUBLIC KEY: $otherPublicKey \nENCRYPTED DATA: ${encryptedData.toJson()} \nSECRET KEY: ${sharedSecret.extractBytes()}');
+
     final secretBox = SecretBox(encryptedData.bytes,
         nonce: encryptedData.nonce, mac: Mac(encryptedData.mac));
 
     var encodedMessage =
         await _cypherAlgorithm.decrypt(secretBox, secretKey: sharedSecret);
+
+    
     return utf8.decode(encodedMessage);
   }
 

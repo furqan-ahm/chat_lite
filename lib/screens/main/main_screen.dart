@@ -1,6 +1,6 @@
 import 'package:e2ee_chat/constants/colors.dart';
 import 'package:e2ee_chat/providers/auth_provider.dart';
-import 'package:e2ee_chat/screens/main/users_list_screen.dart';
+import 'package:e2ee_chat/screens/main/users_list_view.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
 
