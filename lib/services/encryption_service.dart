@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:cryptography/cryptography.dart';
+import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 //COMMENTS GENERATED WITH CO PILOT WOOOOOOOO
@@ -46,7 +47,7 @@ class E2EncryptionService {
 
   List<int>? _publicKey;
   Future<List<int>> get getPublicKey async {
-    return _publicKey ??= (await _sessionKey.extractPublicKey()).bytes;
+    return _publicKey!;
   }
 
   /// Initializes the encryption service.
@@ -56,16 +57,20 @@ class E2EncryptionService {
     // final algorithm = Sha1();
     // final hash = await algorithm.hash(_appEncryptionSecret.codeUnits);
     // _nonce = hash.bytes.take(12).toList();
+    var box=await Hive.openBox('keys');
 
-    SharedPreferences pref = await SharedPreferences.getInstance();
 
-    var savedKey = pref.getString(uid);
+    var savedKey=box.get(uid);
+    // var savedKey = pref.getString(uid);
     if (savedKey != null && savedKey.isNotEmpty) {
       _sessionKey = keyPairFromJsonString(savedKey);
     } else {
       _sessionKey = await _exchangeAlgorithm.newKeyPair();
-      pref.setString(uid, (await keyPairToJsonString(_sessionKey)));
+      box.put(uid, (await keyPairToJsonString(_sessionKey)));
     }
+
+     _publicKey= (await _sessionKey.extractPublicKey()).bytes;
+    print((await getPublicKey));
   }
 
   /// Retrieves or generates a shared secret key for encryption/decryption.
