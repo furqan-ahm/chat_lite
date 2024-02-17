@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:cryptography/cryptography.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,25 +12,28 @@ class EncryptedData {
 
   /// A message authentication code.
   final List<int> mac;
+  final List<int> nonce;
 
-  EncryptedData({required this.bytes, required this.mac});
+  EncryptedData({required this.bytes, required this.mac, required this.nonce});
 }
 
 /// Service for end-to-end encryption.
 class E2EncryptionService {
+
   E2EncryptionService._();
 
   static final E2EncryptionService _instance = E2EncryptionService._();
   static E2EncryptionService get instance => _instance;
 
-  late List<int> _nonce;
-  String _appEncryptionSecret = "BIG MAFIA SECRET WAHOOOO";
+  final Random _random = Random();
+
+  List<int> get _nonce => List.generate(12, (index) => _random.nextInt(200));
 
   final _exchangeAlgorithm = X25519();
   final _cypherAlgorithm = Chacha20.poly1305Aead();
   late SimpleKeyPair _sessionKey;
 
-  Map<SimplePublicKey, SecretKey> _cachedSecrets = {};
+  final Map<SimplePublicKey, SecretKey> _cachedSecrets = {};
 
   List<int>? _publicKey;
   Future<List<int>> get getPublicKey async {
@@ -40,9 +44,9 @@ class E2EncryptionService {
   ///
   /// [uid] - The user ID.
   initialize({String uid = 'default'}) async {
-    final algorithm = Sha1();
-    final hash = await algorithm.hash(_appEncryptionSecret.codeUnits);
-    _nonce = hash.bytes.take(12).toList();
+    // final algorithm = Sha1();
+    // final hash = await algorithm.hash(_appEncryptionSecret.codeUnits);
+    // _nonce = hash.bytes.take(12).toList();
 
     SharedPreferences pref = await SharedPreferences.getInstance();
 
@@ -87,6 +91,7 @@ class E2EncryptionService {
 
     return EncryptedData(
       bytes: secretBox.cipherText,
+      nonce: _nonce,
       mac: secretBox.mac.bytes,
     );
   }
@@ -103,7 +108,7 @@ class E2EncryptionService {
     ));
 
     final secretBox = SecretBox(encryptedData.bytes,
-        nonce: _nonce, mac: Mac(encryptedData.mac));
+        nonce: encryptedData.nonce, mac: Mac(encryptedData.mac));
 
     var encodedMessage =
         await _cypherAlgorithm.decrypt(secretBox, secretKey: sharedSecret);
