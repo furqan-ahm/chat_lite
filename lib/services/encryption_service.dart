@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:cryptography/cryptography.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 //COMMENTS GENERATED WITH CO PILOT WOOOOOOOO
 
 class EncryptedData {
@@ -15,11 +14,21 @@ class EncryptedData {
   final List<int> nonce;
 
   EncryptedData({required this.bytes, required this.mac, required this.nonce});
+
+  toJson() {
+    return {'bytes': bytes, 'mac': mac, 'nonce': nonce};
+  }
+
+  factory EncryptedData.fromJson(Map json) {
+    return EncryptedData(
+        bytes: <int>[...json['bytes']],
+        mac: <int>[...json['mac']],
+        nonce: <int>[...json['nonce']]);
+  }
 }
 
 /// Service for end-to-end encryption.
 class E2EncryptionService {
-
   E2EncryptionService._();
 
   static final E2EncryptionService _instance = E2EncryptionService._();
@@ -127,8 +136,8 @@ class E2EncryptionService {
     Map data = json.decode(encodedJson);
 
     return SimpleKeyPairData(<int>[...data['private']],
-        publicKey: SimplePublicKey(<int>[...data['public']],
-            type: KeyPairType.x25519),
+        publicKey:
+            SimplePublicKey(<int>[...data['public']], type: KeyPairType.x25519),
         type: KeyPairType.x25519);
   }
 }

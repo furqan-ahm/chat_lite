@@ -1,8 +1,12 @@
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e2ee_chat/models/message.dart';
 import 'package:e2ee_chat/resources/firestore_collections.dart';
 import 'package:flutter/widgets.dart';
+
+import '../../models/chat_room.dart';
+
 class FirestoreRepository {
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -10,8 +14,6 @@ class FirestoreRepository {
   //     .collection(FirebaseCollections.ordersCollection)
   //     .doc(orderId)
   //     .collection('chats');
-
-
 
   // static Stream<List<OrderChatRoom>> getOrderChatStream() => _firestore
   //     .collection(FirebaseCollections.ordersCollection)
@@ -22,7 +24,6 @@ class FirestoreRepository {
   //             .map((e) {
   //           return OrderChatRoom.fromMap(e.id, e.data());
   //         }).toList());
-
 
   // static Stream<List<Message>> getMessagesStream(
   //   String orderId,
@@ -42,7 +43,6 @@ class FirestoreRepository {
   //           (error, stackTrace) => print(error));
   // }
 
-
   // static sendOrderMessage(String orderId, Map<String, Object> data) {
   //   chatCollection(orderId).add(data);
   //   _firestore
@@ -55,14 +55,99 @@ class FirestoreRepository {
   //   }, SetOptions(merge: true));
   // }
 
-  
+  static Stream<List<Message>> getMessages(String chatId) {
+    return _firestore
+        .collection('chatrooms')
+        .doc(chatId)
+        .collection('messages')
+        .orderBy('time', descending: true)
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((e) => Message.fromMap(e.data())).toList());
+  }
+
+  static Future<ChatRoom> createChatRoom(
+      String currentUid, String targetUid) async {
+    //creating unique id that stays same when either of users start the convo
+    String chatId;
+    List<String> memberIds;
+
+    if (currentUid.compareTo(targetUid) > 0) {
+      chatId = currentUid + targetUid;
+      memberIds = [currentUid, targetUid];
+    } else {
+      chatId = targetUid + currentUid;
+      memberIds = [targetUid, currentUid];
+    }
+
+    ChatRoom newRoom = ChatRoom(chatRoomId: chatId, memberIds: memberIds);
+
+    await _firestore.collection('chatrooms').doc(chatId).set(
+      {
+        'chatId': chatId,
+        'memberIds': memberIds,
+      },
+      SetOptions(merge: true),
+    );
+
+    return newRoom;
+  }
+
+  // needs indexing for proper ordering
+  static Stream<List<ChatRoom>> getChatRooms(String uid) {
+    return _firestore
+        .collection('chatrooms')
+        .where('memberIds', arrayContains: uid)
+        .orderBy('lastMessageTime', descending: true)
+        .snapshots()
+        .map((event) => event.docs
+            .map((e) => ChatRoom.fromMap(e.data()))
+            .toList());
+  }
+
+  static Future<void> uploadMessage(String chatId, Message message) async {
+    _firestore
+        .collection('chatrooms')
+        .doc(chatId)
+        .collection('messages')
+        .add(message.toMap());
+
+    _firestore.collection('chatrooms').doc(chatId).update({
+      'lastMessage': message.toMap(),
+      'lastMessageTime': message.toMap()['time']
+    });
+  }
+
+  static Future<void> markMessagesRead(
+    String chatId,
+    String uid,
+    Message lastMessage,
+  ) async {
+    _firestore
+        .collection('chatrooms')
+        .doc(chatId)
+        .collection('messages')
+        .where('senderId', isEqualTo: uid)
+        .get()
+        .then((value) => value.docs.forEach((element) {
+              element.reference.update({'unread': false});
+            }));
+
+    if (lastMessage.sender!.uid != uid) return;
+    var mapData = lastMessage.toMap();
+    mapData['unread'] = false;
+    _firestore
+        .collection('chatrooms')
+        .doc(chatId)
+        .update({'lastMessage': mapData});
+  }
+
   static Future<dynamic> setNotificationToken(String uid, String token) async {
     await _firestore
         .collection(FirebaseCollections.usersCollection)
         .doc(uid)
         .update({'notification_token': token});
   }
-
 
   static Future<dynamic> isRegistered(String phoneNumber) async {
     dynamic result = '';
