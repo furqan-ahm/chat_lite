@@ -13,6 +13,9 @@ const lineColor=Color(0xffD3D3D3);
 
 const isBlack = true;
 
+
+const backgroundColor=Color(0xff1f1f1f);
+
 //font faimly: Poppins
 
 //font sizes: 17,  22,  25.5

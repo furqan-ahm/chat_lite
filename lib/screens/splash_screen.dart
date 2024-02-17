@@ -1,4 +1,5 @@
 
+import 'package:e2ee_chat/constants/colors.dart';
 import 'package:e2ee_chat/screens/auth/welcome_screen.dart';
 import 'package:e2ee_chat/screens/main/main_screen.dart';
 import 'package:flutter/material.dart';
@@ -75,20 +76,16 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Stack(
+      backgroundColor: backgroundColor,
+      body: Column(
         children: [
           Center(
-            child: Image.asset('assets/chatlogo.png',
+            child: Image.asset('assets/get_started/welcome.png',
                 width: MediaQuery.of(context).size.width * 0.65),
           ),
-          Center(
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.65,
-              height: MediaQuery.of(context).size.width * 0.65 * 828 / 928,
-              child: const CircularProgressIndicator(
-                strokeWidth: 5,
-              ),
+          const Center(
+            child: CircularProgressIndicator(
+              strokeWidth: 5,
             ),
           ),
         ],

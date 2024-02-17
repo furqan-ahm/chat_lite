@@ -37,6 +37,7 @@ class MyAppState extends State<MyApp> {
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'ChatX',
         theme: theme,
         home: const SplashScreen(),
