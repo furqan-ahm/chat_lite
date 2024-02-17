@@ -1,6 +1,6 @@
-
 import 'package:e2ee_chat/constants/colors.dart';
 import 'package:e2ee_chat/providers/auth_provider.dart';
+import 'package:e2ee_chat/screens/auth/fill_profile_screen.dart';
 import 'package:e2ee_chat/screens/auth/verify_email_screen.dart';
 import 'package:e2ee_chat/utils/mixins.dart';
 import 'package:e2ee_chat/utils/validation.dart';
@@ -121,9 +121,18 @@ class _SignupScreenState extends State<SignupScreen> with ContextSize {
                                 Provider.of<UserStateProvider>(context,
                                     listen: false);
                             userStateProvider.saveLoginSharedPreference(true);
+
                             Navigator.push(
                                 context,
-                                PageTransition(type: PageTransitionType.rightToLeft, child: VerifyEmailScreen(userCredentials: value,),));
+                                PageTransition(
+                                  type: PageTransitionType.rightToLeft,
+                                  child: FillProfileScreen(
+                                    credentials: value,
+                                  ),
+                                ));
+                            // Navigator.push(
+                            //     context,
+                            //     PageTransition(type: PageTransitionType.rightToLeft, child: VerifyEmailScreen(userCredentials: value,),));
                           }
                         });
                       }

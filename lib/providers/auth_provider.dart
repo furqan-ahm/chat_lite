@@ -19,6 +19,9 @@ import 'package:provider/provider.dart';
 class MyAuthProvider extends ChangeNotifier {
   bool get emailVerified => FirebaseAuth.instance.currentUser!.emailVerified;
 
+  static MyAuthProvider of(BuildContext context, {bool listen = false}) =>
+      Provider.of<MyAuthProvider>(context, listen: listen);
+
   refreshVerificationStatus() {
     FirebaseAuth.instance.currentUser!
         .reload()
@@ -83,23 +86,23 @@ class MyAuthProvider extends ChangeNotifier {
         //     context, RouteName.mainScreen, (route) => false);
       } else {
         if (value is UserCredential) {
-          if (value.user!.emailVerified) {
-            Navigator.push(
-                context,
-                PageTransition(
-                  type: PageTransitionType.rightToLeft,
-                  child: const MainScreen(),
-                ));
-          } else {
-            Navigator.push(
-                context,
-                PageTransition(
-                  type: PageTransitionType.rightToLeft,
-                  child: VerifyEmailScreen(
-                    userCredentials: value,
-                  ),
-                ));
-          }
+          // if (value.user!.emailVerified) {
+          Navigator.push(
+              context,
+              PageTransition(
+                type: PageTransitionType.rightToLeft,
+                child: const MainScreen(),
+              ));
+          // } else {
+          //   Navigator.push(
+          //       context,
+          //       PageTransition(
+          //         type: PageTransitionType.rightToLeft,
+          //         child: VerifyEmailScreen(
+          //           userCredentials: value,
+          //         ),
+          //       ));
+          // }
           return;
         }
         Utils.showSnackbar(value.toString(), context);
