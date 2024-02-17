@@ -13,10 +13,10 @@ class AppUser {
   String contactNum;
   bool numberVerified;
   DateTime? dateOfBirth;
+  List<int> publicKey;
   bool profileFilled;
   String? selectedAddress;
 
-  bool get isGuest => this == guestUser;
 
   static isSelectedAddress(String key, String? selectedAddress) =>
       key == selectedAddress;
@@ -32,6 +32,7 @@ class AppUser {
       required this.numberVerified,
       this.profileFilled=false,
       this.notificationToken,
+      required this.publicKey,
       this.email = '',
       this.gender = 'Prefer not to say',
       this.contactNum = '',
@@ -46,7 +47,7 @@ class AppUser {
         numberVerified: data['numberVerified']??false,
         nickname: data['nickname']??'',
         notificationToken: data['notification_token'],
-      
+        publicKey: <int>[...data['publicKey']],
         email: data['email'],
         gender: data['gender'] == '' ? 'Prefer not to say' : data['gender'],
         contactNum: data['phone'],
@@ -63,7 +64,7 @@ class AppUser {
         'numberVerified':numberVerified,
         'nickname': nickname,
         'notification_token':notificationToken,
-      
+        'publicKey':publicKey,
         'email': email,
         'gender': gender,
         'phone': contactNum,
@@ -85,6 +86,7 @@ class AppUser {
       AppUser(
           uid: uid,
           numberVerified: numberVerified,
+          publicKey: publicKey,
           notificationToken: notificationToken,
           name: name ?? this.name,
           email: email,
@@ -96,18 +98,6 @@ class AppUser {
   // List<String> getAddresses() =>
   //     address.entries.map((e) => '${e.key}: ${e.value}').toList();
 }
-
-AppUser guestUser = AppUser(
-  uid: 'guestuid',
-  name: 'GUEST ACCOUNT',
-  numberVerified: false,
-  notificationToken: '',
-  email: 'N/A',
-  gender: 'Prefer not to say',
-  contactNum: 'N/A',
-  dateOfBirth: DateTime(1947, 8, 14),
-  selectedAddress: '',
-);
 
 
 //have to make these default values centralized, ie for a default gender value, there should be a singular class which holds all these values.

@@ -1,5 +1,4 @@
 import 'package:e2ee_chat/screens/auth/welcome_screen.dart';
-import 'package:e2ee_chat/screens/main/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -28,30 +27,42 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void checkAuthenticationSession(BuildContext context) {
-    _getSessionInfo(context).then((value) async {
-      if (value[0] == true || value[1] == false) {
-        await Future.delayed(
-          const Duration(seconds: 1),
-          () {
-           Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const WelcomeScreen()),
-            );
-          },
+    Future.delayed(
+      const Duration(seconds: 1),
+      () {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => const WelcomeScreen()),
         );
-      } else {
-        await Future.delayed(
-          const Duration(seconds: 1),
-          () {
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => const MainScreen()),
-                (route) => false);
-          },
-        );
-      }
-    }).onError((error, stackTrace) {
-      print(error);
-    });
+      },
+    );
+
+    //Wont work yet
+
+    // _getSessionInfo(context).then((value) async {
+    //   if (value[0] == true || value[1] == false) {
+    //     await Future.delayed(
+    //       const Duration(seconds: 1),
+    //       () {
+    //        Navigator.of(context).push(
+    //           MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+    //         );
+    //       },
+    //     );
+    //   } else {
+    //     await Future.delayed(
+    //       const Duration(seconds: 1),
+    //       () {
+    //         Navigator.pushAndRemoveUntil(
+    //             context,
+    //             MaterialPageRoute(builder: (context) => const MainScreen()),
+    //             (route) => false);
+    //       },
+    //     );
+    //   }
+    // }).onError((error, stackTrace) {
+
+    //   print(error);
+    // });
   }
 
   @override
