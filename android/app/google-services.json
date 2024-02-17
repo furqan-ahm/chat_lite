@@ -1,36 +1,26 @@
 {
   "project_info": {
-    "project_number": "569128518823",
-    "project_id": "chat-lite-d6e5f",
-    "storage_bucket": "chat-lite-d6e5f.appspot.com"
+    "project_number": "34550787191",
+    "project_id": "e2ee-chat-e126d",
+    "storage_bucket": "e2ee-chat-e126d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:569128518823:android:12d9803aba4198832cc782",
+        "mobilesdk_app_id": "1:34550787191:android:bb10a51ed10c86e1deaa72",
         "android_client_info": {
-          "package_name": "com.maiqmaliq.chat_lite"
+          "package_name": "com.example.e2ee_chat"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "569128518823-qdm3c5476652jbm8pj9se6h775uh7q0k.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyD5McHphZAROGBlpQcg7WTxg00MgnaaCQw"
+          "current_key": "AIzaSyApvHHSIB2KlluMzz3Ys4Dzt0U492WSwIA"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "569128518823-qdm3c5476652jbm8pj9se6h775uh7q0k.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

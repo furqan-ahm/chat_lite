@@ -1,32 +1,34 @@
-import 'package:chat_lite/services/auth_service.dart';
-import 'package:chat_lite/wrapper.dart';
+import 'package:e2ee_chat/firebase_options.dart';
+import 'package:e2ee_chat/services/auth_service.dart';
+import 'package:e2ee_chat/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'models/user.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(MyApp());
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  _MyAppState createState() => _MyAppState();
+  MyAppState createState() => MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
-
+class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return StreamProvider<chatUser?>.value(
       value: AuthService().user,
       initialData: null,
-      child: MaterialApp(
+      child: const MaterialApp(
         home: Wrapper(),
       ),
     );

@@ -1,9 +1,9 @@
-import 'package:chat_lite/constants.dart';
+import 'package:e2ee_chat/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService{
 
-  FirebaseFirestore _db=FirebaseFirestore.instance;
+  final FirebaseFirestore _db=FirebaseFirestore.instance;
 
   Future<QuerySnapshot>getUserByUsername(String uname)async{
     return await _db.collection('users').where("name", isEqualTo: "$uname").get();

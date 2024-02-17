@@ -1,6 +1,7 @@
-import 'package:chat_lite/models/user.dart';
-import 'package:chat_lite/views/authentication/authenticate.dart';
-import 'package:chat_lite/views/home/chatrooms_screen.dart';
+
+import 'package:e2ee_chat/models/user.dart';
+import 'package:e2ee_chat/views/authentication/authenticate.dart';
+import 'package:e2ee_chat/views/home/chatrooms_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,7 +13,7 @@ class Wrapper extends StatelessWidget {
 
     final user=Provider.of<chatUser?>(context);
 
-    if(user==null)return Authenticate();
+    if(user==null)return const Authenticate();
 
     return const ChatRoom();
   }

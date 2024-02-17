@@ -1,8 +1,8 @@
-import 'package:chat_lite/constants.dart';
-import 'package:chat_lite/models/user.dart';
-import 'package:chat_lite/services/auth_service.dart';
-import 'package:chat_lite/services/database_service.dart';
-import 'package:chat_lite/services/local_pref.dart';
+import 'package:e2ee_chat/constants.dart';
+import 'package:e2ee_chat/models/user.dart';
+import 'package:e2ee_chat/services/auth_service.dart';
+import 'package:e2ee_chat/services/database_service.dart';
+import 'package:e2ee_chat/services/local_pref.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

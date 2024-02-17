@@ -1,7 +1,7 @@
 
-import 'package:chat_lite/constants.dart';
-import 'package:chat_lite/services/database_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e2ee_chat/constants.dart';
+import 'package:e2ee_chat/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'search_tile.dart';
 
@@ -10,21 +10,21 @@ class SearchView extends StatefulWidget {
   const SearchView({Key? key}) : super(key: key);
 
   @override
-  _SearchViewState createState() => _SearchViewState();
+  SearchViewState createState() => SearchViewState();
 }
 
-class _SearchViewState extends State<SearchView> {
+class SearchViewState extends State<SearchView> {
 
-  DatabaseService _db=DatabaseService();
+  final DatabaseService _db=DatabaseService();
 
   QuerySnapshot? searchSnapshot;
 
   String uname='';
   Size? size;
 
-  Widget SearchList(context){
+  Widget searchList(context){
     return ListView.builder(
-      physics: ScrollPhysics(),
+      physics: const ScrollPhysics(),
       shrinkWrap: true,
       itemCount: searchSnapshot!.docs.length,
       itemBuilder: (context, int index){
@@ -64,7 +64,7 @@ class _SearchViewState extends State<SearchView> {
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.fromLTRB(10,0,10,8),
+              padding: const EdgeInsets.fromLTRB(10,0,10,8),
               child: TextField(
                 style: simpleTextStyle,
                 decoration: InputDecoration(
@@ -95,7 +95,7 @@ class _SearchViewState extends State<SearchView> {
               onSubmitted: (val){initiateSearch();},
               ),
             ),
-            searchSnapshot==null?SizedBox():SearchList(context)
+            searchSnapshot==null?SizedBox():searchList(context)
           ],
         ),
       ),

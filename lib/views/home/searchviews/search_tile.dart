@@ -1,5 +1,6 @@
-import 'package:chat_lite/services/database_service.dart';
-import 'package:chat_lite/views/home/conversationviews/conversation_screen.dart';
+
+import 'package:e2ee_chat/services/database_service.dart';
+import 'package:e2ee_chat/views/home/conversationviews/conversation_view.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
@@ -8,12 +9,16 @@ import '../../../constants.dart';
 class SearchTile extends StatelessWidget {
 
 
-  DatabaseService _db=DatabaseService();
+  final DatabaseService _db=DatabaseService();
 
   final String userName;
   final String email;
   final BuildContext context;
 
+  SearchTile({super.key, required this.email, required this.userName, required this.context});
+  
+  
+  
   ///create chatRoom and push as replacement
   initiateChatRoom(){
 
@@ -43,7 +48,6 @@ class SearchTile extends StatelessWidget {
   }
 
 
-  SearchTile({required this.email, required this.userName, required this.context});
 
   @override
   Widget build(BuildContext context) {

@@ -1,20 +1,20 @@
-import 'package:chat_lite/services/auth_service.dart';
-import 'package:chat_lite/services/database_service.dart';
-import 'package:chat_lite/services/local_pref.dart';
-import 'package:chat_lite/views/home/room_tile.dart';
-import 'package:chat_lite/views/home/searchviews/search.dart';
+import 'package:e2ee_chat/services/auth_service.dart';
+import 'package:e2ee_chat/services/database_service.dart';
+import 'package:e2ee_chat/services/local_pref.dart';
+import 'package:e2ee_chat/views/home/room_tile.dart';
+import 'package:e2ee_chat/views/home/searchviews/search.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:chat_lite/constants.dart';
+import 'package:e2ee_chat/constants.dart';
 
 class ChatRoom extends StatefulWidget {
   const ChatRoom({Key? key}) : super(key: key);
 
   @override
-  _ChatRoomState createState() => _ChatRoomState();
+  ChatRoomState createState() => ChatRoomState();
 }
 
-class _ChatRoomState extends State<ChatRoom> {
+class ChatRoomState extends State<ChatRoom> {
 
   final AuthService _auth= AuthService();
 
