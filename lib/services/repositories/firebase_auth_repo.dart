@@ -75,9 +75,9 @@ class FirebaseAuthRepository {
       auth.UserCredential result = await auth.FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
 
-      if(!result.user!.emailVerified){
-        return result;
-      }
+      // if(!result.user!.emailVerified){
+      //   return result;
+      // }
       DocumentSnapshot<Map<String, dynamic>> documentSnapshot = await firestore
           .collection(FirebaseCollections.usersCollection)
           .doc(result.user?.uid ?? '')

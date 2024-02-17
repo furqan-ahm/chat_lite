@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:e2ee_chat/models/user.dart';
 import 'package:e2ee_chat/providers/user_state_provider.dart';
+import 'package:e2ee_chat/screens/auth/fill_profile_screen.dart';
 import 'package:e2ee_chat/screens/auth/welcome_screen.dart';
 import 'package:e2ee_chat/screens/main/main_screen.dart';
 import 'package:e2ee_chat/services/encryption_service.dart';
@@ -87,7 +88,7 @@ class MyAuthProvider extends ChangeNotifier {
               context,
               PageTransition(
                 type: PageTransitionType.rightToLeft,
-                child: const MainScreen(),
+                child:  FillProfileScreen(credentials: value,),
               ));
           // } else {
           //   Navigator.push(
@@ -120,7 +121,7 @@ class MyAuthProvider extends ChangeNotifier {
   }
 
   Future<void> signOut(BuildContext context) async {
-    FirestoreRepository.setNotificationToken(currentUser.uid, '');
+    // FirestoreRepository.setNotificationToken(currentUser.uid, '');
     // GoogleSignIn().disconnect();
     FirebaseAuthRepository.logout().then((value) async {
       if (value is String) {

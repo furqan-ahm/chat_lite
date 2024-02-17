@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e2ee_chat/models/message.dart';
+import 'package:e2ee_chat/models/user.dart';
 import 'package:e2ee_chat/resources/firestore_collections.dart';
 import 'package:flutter/widgets.dart';
 
@@ -55,6 +56,14 @@ class FirestoreRepository {
   //   }, SetOptions(merge: true));
   // }
 
+  static Stream<List<AppUser>> getUsers(String uid) {
+    return _firestore
+        .collection(FirebaseCollections.usersCollection).where('uid', isNotEqualTo: uid)
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((e) => AppUser.fromMap(e.data())).toList());
+  }
+
   static Stream<List<Message>> getMessages(String chatId) {
     return _firestore
         .collection('chatrooms')
@@ -67,25 +76,34 @@ class FirestoreRepository {
   }
 
   static Future<ChatRoom> createChatRoom(
-      String currentUid, String targetUid) async {
+      AppUser currentUser, AppUser otherUser) async {
     //creating unique id that stays same when either of users start the convo
     String chatId;
     List<String> memberIds;
+    Map<String, List<int>> publicKeys = {
+      currentUser.uid: currentUser.publicKey,
+      otherUser.uid: otherUser.publicKey
+    };
 
-    if (currentUid.compareTo(targetUid) > 0) {
-      chatId = currentUid + targetUid;
-      memberIds = [currentUid, targetUid];
+    if (currentUser.uid.compareTo(otherUser.uid) > 0) {
+      chatId = currentUser.uid + otherUser.uid;
+      memberIds = [currentUser.uid, otherUser.uid];
     } else {
-      chatId = targetUid + currentUid;
-      memberIds = [targetUid, currentUid];
+      chatId = otherUser.uid + currentUser.uid;
+      memberIds = [otherUser.uid, currentUser.uid];
     }
 
-    ChatRoom newRoom = ChatRoom(chatRoomId: chatId, memberIds: memberIds);
+    ChatRoom newRoom = ChatRoom(
+      chatRoomId: chatId,
+      memberIds: memberIds,
+      publicKeys: publicKeys,
+    );
 
     await _firestore.collection('chatrooms').doc(chatId).set(
       {
         'chatId': chatId,
         'memberIds': memberIds,
+        'publicKeys': publicKeys,
       },
       SetOptions(merge: true),
     );
@@ -100,9 +118,8 @@ class FirestoreRepository {
         .where('memberIds', arrayContains: uid)
         .orderBy('lastMessageTime', descending: true)
         .snapshots()
-        .map((event) => event.docs
-            .map((e) => ChatRoom.fromMap(e.data()))
-            .toList());
+        .map((event) =>
+            event.docs.map((e) => ChatRoom.fromMap(e.data())).toList());
   }
 
   static Future<void> uploadMessage(String chatId, Message message) async {

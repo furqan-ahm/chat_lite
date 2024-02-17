@@ -1,4 +1,6 @@
+import 'package:e2ee_chat/constants/colors.dart';
 import 'package:e2ee_chat/providers/auth_provider.dart';
+import 'package:e2ee_chat/screens/main/users_list_screen.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
 
@@ -6,14 +8,22 @@ class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
 
   @override
-  _MainScreenState createState() => _MainScreenState();
+  MainScreenState createState() => MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    floatingActionButton: FloatingActionButton(
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        title: const Text(
+          'Chat SAMPLE'
+        ),
+      ),
+      body: const UsersListView(),
+      floatingActionButton: FloatingActionButton(
         onPressed: () {
           MyAuthProvider.of(context).signOut(context);
         },
