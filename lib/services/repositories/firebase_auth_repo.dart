@@ -95,6 +95,8 @@ class FirebaseAuthRepository {
       switch ((exception).code) {
         case 'invalid-email':
           return 'Email address is malformed.';
+        case 'invalid-credential':
+          return 'Invalid email or password.';
         case 'wrong-password':
           return 'Wrong password.';
         case 'user-not-found':

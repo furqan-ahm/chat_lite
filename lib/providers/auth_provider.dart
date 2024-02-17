@@ -4,6 +4,7 @@ import 'package:e2ee_chat/providers/user_state_provider.dart';
 import 'package:e2ee_chat/screens/auth/verify_email_screen.dart';
 import 'package:e2ee_chat/screens/auth/welcome_screen.dart';
 import 'package:e2ee_chat/screens/main/main_screen.dart';
+import 'package:e2ee_chat/services/encryption_service.dart';
 import 'package:e2ee_chat/services/repositories/firebase_auth_repo.dart';
 import 'package:e2ee_chat/services/repositories/firebase_storage_repo.dart';
 import 'package:e2ee_chat/services/repositories/firestore_repo.dart';
@@ -16,7 +17,6 @@ import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 class MyAuthProvider extends ChangeNotifier {
-
   bool get emailVerified => FirebaseAuth.instance.currentUser!.emailVerified;
 
   refreshVerificationStatus() {
@@ -74,7 +74,10 @@ class MyAuthProvider extends ChangeNotifier {
 
         Navigator.pushAndRemoveUntil(
             context,
-            PageTransition(type: PageTransitionType.rightToLeft, child: const MainScreen(),),
+            PageTransition(
+              type: PageTransitionType.rightToLeft,
+              child: const MainScreen(),
+            ),
             (route) => false);
         // Navigator.pushNamedAndRemoveUntil(
         //     context, RouteName.mainScreen, (route) => false);
@@ -83,11 +86,19 @@ class MyAuthProvider extends ChangeNotifier {
           if (value.user!.emailVerified) {
             Navigator.push(
                 context,
-                PageTransition(type: PageTransitionType.rightToLeft, child: const MainScreen(),));
+                PageTransition(
+                  type: PageTransitionType.rightToLeft,
+                  child: const MainScreen(),
+                ));
           } else {
             Navigator.push(
                 context,
-                PageTransition(type: PageTransitionType.rightToLeft, child: VerifyEmailScreen(userCredentials: value,),));
+                PageTransition(
+                  type: PageTransitionType.rightToLeft,
+                  child: VerifyEmailScreen(
+                    userCredentials: value,
+                  ),
+                ));
           }
           return;
         }
@@ -287,6 +298,7 @@ class MyAuthProvider extends ChangeNotifier {
     required String phoneNumber,
   }) async {
     String? token = await FirebaseMessaging.instance.getToken();
+
     AppUser appUser = AppUser(
       email: email,
       numberVerified: false,
@@ -314,7 +326,10 @@ class MyAuthProvider extends ChangeNotifier {
 
         Navigator.pushAndRemoveUntil(
             context,
-           PageTransition(type: PageTransitionType.rightToLeft, child: const MainScreen(),),
+            PageTransition(
+              type: PageTransitionType.rightToLeft,
+              child: const MainScreen(),
+            ),
             (route) => false);
         // Navigator.pushNamedAndRemoveUntil(
         //     context, RouteName.mainScreen, (route) => false);
@@ -377,7 +392,7 @@ class MyAuthProvider extends ChangeNotifier {
 //           Navigator.pop(dialogContext);
 //           //
 //           FocusScope.of(context).unfocus();
-          
+
 //           Navigator.push(
 //               context,
 //               MaterialPageRoute(
@@ -525,7 +540,7 @@ class MyAuthProvider extends ChangeNotifier {
 //           Navigator.pop(dialogContext);
 //           //
 //           FocusScope.of(context).unfocus();
-          
+
 //           Navigator.push(
 //               context,
 //               MaterialPageRoute(
