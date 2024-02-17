@@ -1,5 +1,3 @@
-
-import 'package:e2ee_chat/constants/colors.dart';
 import 'package:e2ee_chat/screens/auth/welcome_screen.dart';
 import 'package:e2ee_chat/screens/main/main_screen.dart';
 import 'package:flutter/material.dart';
@@ -31,24 +29,13 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void checkAuthenticationSession(BuildContext context) {
     _getSessionInfo(context).then((value) async {
-      if (value[0] == true) {
+      if (value[0] == true || value[1] == false) {
         await Future.delayed(
           const Duration(seconds: 1),
           () {
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => const WelcomeScreen()),
-                (route) => false);
-          },
-        );
-      } else if (value[1] == false) {
-        await Future.delayed(
-          const Duration(seconds: 1),
-          () {
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => const WelcomeScreen()),
-                (route) => false);
+           Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+            );
           },
         );
       } else {
@@ -76,16 +63,23 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
+      // backgroundColor: backgroundColor,
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
-            child: Image.asset('assets/get_started/welcome.png',
-                width: MediaQuery.of(context).size.width * 0.65),
+            child: Hero(
+              tag: 'logo',
+              child: Image.asset('assets/get_started/welcome.png',
+                  width: MediaQuery.of(context).size.width * 0.65),
+            ),
+          ),
+          const SizedBox(
+            height: 25,
           ),
           const Center(
             child: CircularProgressIndicator(
-              strokeWidth: 5,
+              strokeWidth: 2,
             ),
           ),
         ],

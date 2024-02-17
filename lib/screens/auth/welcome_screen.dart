@@ -31,9 +31,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> with ContextSize{
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Spacer(),
-            Image.asset(
-              'assets/get_started/welcome.png',
-              height: size.height / 4.5,
+            Hero(
+              tag: 'logo',
+              child: Image.asset(
+                'assets/get_started/welcome.png',
+                height: size.height / 4.5,
+              ),
             ),
             const SizedBox(
               height: 20,

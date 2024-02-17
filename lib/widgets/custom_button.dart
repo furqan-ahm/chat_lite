@@ -59,7 +59,7 @@ class _CustomButtonState extends State<CustomButton> {
         child: Padding(
           // padding: const EdgeInsets.all(16.0),
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 24),
-          child: loading?const CircularProgressIndicator(color: Colors.white,):Text(
+          child: loading?const CircularProgressIndicator(color: Colors.white, strokeWidth: 2,):Text(
             widget.buttonText ?? 'Press',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   color: widget.foregroundColor??Colors.white,
